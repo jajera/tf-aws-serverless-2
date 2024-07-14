@@ -1,15 +1,15 @@
-resource "aws_kms_key" "private_tier1" {
+resource "aws_kms_key" "private" {
   deletion_window_in_days = 7
   enable_key_rotation     = true
 }
 
-resource "aws_kms_alias" "private_tier1" {
-  name          = "alias/serverless-2-${local.suffix}"
-  target_key_id = aws_kms_key.private_tier1.id
+resource "aws_kms_alias" "private" {
+  name          = "alias/serverless-2-private-${local.suffix}"
+  target_key_id = aws_kms_key.private.id
 }
 
-resource "aws_kms_key_policy" "private_tier1" {
-  key_id = aws_kms_key.private_tier1.id
+resource "aws_kms_key_policy" "private" {
+  key_id = aws_kms_key.private.id
   policy = jsonencode({
     Statement = [
       {
@@ -36,7 +36,8 @@ resource "aws_kms_key_policy" "private_tier1" {
         Condition : {
           ArnEquals : {
             "kms:EncryptionContext:aws:logs:arn" : [
-              "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/serverless-2/ecs/private-tier1/logs"
+              "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/ecs-${local.suffix}/ecs/cluster/private",
+              "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/ecs-${local.suffix}/ecs/service/app1"
             ]
           }
         }

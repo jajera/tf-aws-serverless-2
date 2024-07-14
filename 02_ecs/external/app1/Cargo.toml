@@ -1,0 +1,13 @@
+[package]
+name = "rust-actix-web"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-web = "4.8.0"
+lazy_static = "1.5.0"
+reqwest = "0.12.5"
+serde = { version = "1.0.204", features = ["derive"] }
+sysinfo = "0.30.12"
+uuid = { version = "1.9.1", features = ["v4"] }
+openssl = { version = "0.10.64", features = ["vendored"] }

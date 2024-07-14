@@ -3,7 +3,7 @@ resource "aws_ecr_repository" "app1" {
 
   encryption_configuration {
     encryption_type = "KMS"
-    kms_key         = aws_kms_key.private_tier1.arn
+    kms_key         = aws_kms_key.private.arn
   }
 
   force_delete = true

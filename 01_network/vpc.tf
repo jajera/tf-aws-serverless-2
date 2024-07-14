@@ -41,7 +41,6 @@ resource "aws_subnet" "public" {
   }
 }
 
-
 resource "aws_default_network_acl" "example" {
   default_network_acl_id = aws_vpc.example.default_network_acl_id
 

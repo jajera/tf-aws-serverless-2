@@ -1,4 +1,4 @@
-resource "aws_service_discovery_http_namespace" "private_tier1" {
-  name        = "private-tier1"
+resource "aws_service_discovery_http_namespace" "private" {
+  name        = "serverless-2-private-${local.suffix}"
   description = "ECS cluster namespace."
 }

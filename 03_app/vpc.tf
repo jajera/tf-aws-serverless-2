@@ -2,10 +2,22 @@ data "aws_vpc" "example" {
   id = local.vpc_id
 }
 
+data "aws_subnets" "database" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.example.id]
+  }
+
+  filter {
+    name   = "tag:Name"
+    values = ["database*"]
+  }
+}
+
 data "aws_subnets" "private" {
   filter {
     name   = "vpc-id"
-    values = [local.vpc_id]
+    values = [data.aws_vpc.example.id]
   }
 
   filter {

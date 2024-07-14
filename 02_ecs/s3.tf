@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "app1" {
-  bucket        = "serverless-2-app1-${local.suffix}"
+  bucket        = "serverless-2-${local.suffix}"
   force_destroy = true
 }
 
