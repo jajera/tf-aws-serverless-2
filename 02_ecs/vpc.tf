@@ -14,6 +14,18 @@ data "aws_subnets" "private" {
   }
 }
 
+data "aws_subnets" "public" {
+  filter {
+    name   = "vpc-id"
+    values = [local.vpc_id]
+  }
+
+  filter {
+    name   = "tag:Name"
+    values = ["public*"]
+  }
+}
+
 data "aws_route_table" "private" {
   for_each = toset(data.aws_subnets.private.ids)
 
@@ -79,7 +91,7 @@ resource "aws_security_group" "app1_lb" {
   }
 }
 
-resource "aws_vpc_endpoint" "private_tier1_ecr" {
+resource "aws_vpc_endpoint" "ecr" {
   vpc_id              = data.aws_vpc.example.id
   service_name        = "com.amazonaws.${data.aws_region.current.name}.ecr.dkr"
   vpc_endpoint_type   = "Interface"
@@ -92,7 +104,7 @@ resource "aws_vpc_endpoint" "private_tier1_ecr" {
   private_dns_enabled = true
 
   tags = {
-    Name  = "serverless-2-private-tier1-ecr-${local.suffix}"
+    Name  = "serverless-2-private-ecr-${local.suffix}"
   }
 }
 
@@ -109,7 +121,7 @@ resource "aws_vpc_endpoint" "ecr_api" {
   private_dns_enabled = true
 
   tags = {
-    Name  = "serverless-2-private-tier1-ecr-api-${local.suffix}"
+    Name  = "serverless-2-private-ecr-api-${local.suffix}"
   }
 }
 
@@ -126,7 +138,7 @@ resource "aws_vpc_endpoint" "cloudwatch" {
   private_dns_enabled = true
 
   tags = {
-    Name  = "serverless-2-private-tier1-cw-${local.suffix}"
+    Name  = "serverless-2-private-cw-${local.suffix}"
   }
 }
 
@@ -143,7 +155,7 @@ resource "aws_vpc_endpoint" "secrets_manager" {
   private_dns_enabled = true
 
   tags = {
-    Name  = "serverless-2-private-tier1-sm-${local.suffix}"
+    Name  = "serverless-2-private-sm-${local.suffix}"
   }
 }
 
@@ -153,7 +165,7 @@ resource "aws_vpc_endpoint" "s3" {
   vpc_endpoint_type = "Gateway"
 
   tags = {
-    Name  = "serverless-2-private-tier1-s3-${local.suffix}"
+    Name  = "serverless-2-private-s3-${local.suffix}"
   }
 }
 

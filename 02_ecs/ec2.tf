@@ -21,7 +21,7 @@ resource "aws_instance" "imagebuilder" {
   ami                         = data.aws_ami.amzn2023.id
   associate_public_ip_address = false
   iam_instance_profile        = aws_iam_instance_profile.imagebuilder.name
-  instance_type               = "t2.micro"
+  instance_type               = "m5.xlarge"
   subnet_id                   = data.aws_subnets.private.ids[0]
 
   vpc_security_group_ids = [
@@ -51,7 +51,7 @@ resource "aws_instance" "imagebuilder" {
               # download source
               mkdir -p ~/workspace
               aws s3 sync s3://$S3_BUCKET ~/workspace/
-              cd ~/workspace/
+              cd ~/workspace/$APP_NAME
 
               # build image
               docker buildx build -t $APP_NAME:latest .
@@ -64,6 +64,6 @@ resource "aws_instance" "imagebuilder" {
               EOF
 
   tags = {
-    Name = "ecr-image-upload-imagebuilder-${local.suffix}"
+    Name = "serverless-2-imagebuilder-${local.suffix}"
   }
 }
